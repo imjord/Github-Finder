@@ -14,6 +14,7 @@ class App extends Component {
     state = {
         users: [],
         user: {},
+        repos: [],
         loading: false,
         alert: null
     }
@@ -39,6 +40,12 @@ class App extends Component {
        
     }
 
+    getRepos = async (username) => {
+        this.setState({loading: true})
+        const response = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id${process.env.client_ID}&client_secret=${process.env.client_secret}`)
+
+        this.setState({repos: response.data, loading: false})
+    }
 
     // serach github users
     searchUsers = async (text) => {
@@ -62,7 +69,7 @@ class App extends Component {
     render(){
      
       
-        const {users, loading} = this.state;
+        const {users, user, loading, repos} = this.state;
         return (
             <Router>
             <Fragment>
@@ -74,10 +81,13 @@ class App extends Component {
                            <Route exact path='/' render={props => (
                                <Fragment>
                                    <Search setAlert={this.setAlert} searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={ users.length > 0 ? true : false}/>
-                   <Users loading={loading} users={users}/>
+                                     <Users loading={loading} users={users}/>
                                </Fragment>
                            )} />
                            <Route exact path='/about' component={About}/>
+                           <Route exact path='/user/:login' render={props => (
+                               <User { ...props } getRepos={this.getRepos} repos={repos} getUser={this.getUser} user={user} loading={loading}/>
+                                )} />
                        </Switch>
                        
                    </div>
