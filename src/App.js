@@ -7,11 +7,13 @@ import Search from './Components/users/Search';
 import  Alert  from './Components/layout/Alert';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import About from './Components/pages/About';
+import User from './Components/users/User';
 
 class App extends Component {
 
     state = {
         users: [],
+        user: {},
         loading: false,
         alert: null
     }
@@ -28,6 +30,15 @@ class App extends Component {
 
     // }
 
+    // get a single user
+    getUser = async (username) => {
+        this.setState({loading: true})
+        const response = await axios.get(`https://api.github.com/users/${username}?client_id${process.env.client_ID}&client_secret=${process.env.client_secret}`)
+
+        this.setState({user: response.data, loading: false})
+       
+    }
+
 
     // serach github users
     searchUsers = async (text) => {
@@ -35,7 +46,7 @@ class App extends Component {
         const response = await axios.get(`https://api.github.com/search/users?q=${text}&client_id${process.env.client_ID}&client_secret=${process.env.client_secret}`)
 
         this.setState({users: response.data.items, loading: false})
-        console.log(response.data);
+        
     }
 
     clearUsers =  () => {
