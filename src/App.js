@@ -16,7 +16,7 @@ class App extends Component {
     async componentDidMount(){
         this.setState({loading: true})
 
-        const response = await axios.get("https://api.github.com/users")
+        const response = await axios.get(`https://api.github.com/users?client_id${process.env.client_ID}&client_secret=${process.env.client_secret}`)
 
         this.setState({users: response.data, loading: false})
         console.log(response.data);
