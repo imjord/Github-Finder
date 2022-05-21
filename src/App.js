@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react'
+import React, {useState, useEffect, Fragment} from 'react'
 import Navbar from './Components/layout/Navbar';
 import './App.css'
 import Users from './Components/users/Users';
