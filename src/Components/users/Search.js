@@ -11,13 +11,13 @@ const Search = ({showClear, clearUsers, searchUsers, setAlert}) => {
             setAlert('Please enter something', 'danger');
         } else {
            searchUsers(text);
-            setText({text: ''});
+            setText('');
         }
         
     }
 
     const onChange = (e) => {
-        setText({[e.target.name]: e.target.value})
+        setText(e.target.value)
     }
     return (
       <div>
